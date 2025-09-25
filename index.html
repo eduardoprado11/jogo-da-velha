@@ -94,7 +94,7 @@
         <script>
             // ATUALIZAÇÃO: O jogador "X" agora usa o emoji de relâmpago (⚡) e o "0" usa o pneu (⚪).
             const casas = document.querySelectorAll(".casa");
-            let jogador = "X"; // X será o Relâmpago, 0 será o Pneu
+            let jogador = "⚡"; // X será o Relâmpago, 0 será o Pneu
 
             const combinacoes = [
                 [0,1,2],[3,4,5],[6,7,8],
@@ -111,7 +111,7 @@
                if(casa.textContent === "") {
                    
                 // Verifica qual jogador está jogando e usa o emoji correspondente
-                if (jogador === "X") {
+                if (jogador === "⚡") {
                     casa.textContent = "⚡";
                     casa.classList.add('relampago'); // Adiciona classe para estilo
                 } else {
@@ -121,7 +121,7 @@
                    
                 // A troca de jogador continua igual
                 //checarVencedor();
-                jogador = (jogador === "X") ? "0" : "X";
+                jogador = (jogador === "⚡") ? "⚪" : "⚡";
                }
             }
         </script>
