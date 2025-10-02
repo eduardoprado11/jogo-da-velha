@@ -190,6 +190,9 @@
                 // 2. TEXTO E CLASSE: Aplica o jogador e a classe de estilo
                 casa.textContent = jogador;
                 
+                if(checarVencedo()) {
+                   alert("Parabens !!! O jogador " + jogador + "venceu") 
+                } else {
                 // 3. ATUALIZAÇÃO DO JOGADOR: Remove a classe do jogador antigo e adiciona a do novo.
                 casa.classList.remove(`jogador-${jogador}`);
 
@@ -201,8 +204,23 @@
                 // 4. FEEDBACK: Atualiza o status do jogo.
                 statusJogo.innerHTML = `Vez do Jogador <span style="color: var(--cor-corrida-principal);">${jogador}</span>`;
                 statusJogo.querySelector('span').style.color = jogador === 'X' ? 'var(--cor-corrida-principal)' : '#2ecc71';
+                }
                }
+
             }
+
+            function checarVencedor() { 
+                for(let i = 0; i < combinacoes.length; i++) {
+                    const [a,b,c] = combinacoes[i];
+                    if(casas[a].textContent === jogador &&
+                       casas[b].textContent === jogador &&
+                       casas[c].textContent === jogador ){
+                        return true;
+                       } else{
+                        return false;
+                       }
+                }
+         }
         </script>
     </body>
 </html>
