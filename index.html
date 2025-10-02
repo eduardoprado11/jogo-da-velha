@@ -1,4 +1,5 @@
-<html lang="pt - BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
     <head>
         <title>Corrida da Velha</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -6,27 +7,75 @@
         <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Chicle&family=Racing+Sans+One&display=swap" rel="stylesheet">
         
         <style>
-            /* Estilos gerais para o corpo do documento */
+            /* Variáveis CSS para gerenciamento de cores */
+            :root {
+                /* Cores Temáticas */
+                --cor-asfalto: #34495e; /* Fundo */
+                --cor-metal: #ecf0f1; /* Célula - Prata */
+                --cor-corrida-principal: #e74c3c; /* Vermelho McQueen / Destaque */
+                --cor-faixa-pista: #f1c40f; /* Amarelo Faixa */
+                --cor-asfalto-escuro: #2c3e50; /* Borda Tabuleiro */
+
+                /* Fontes */
+                --fonte-titulo: 'Bungee Inline', cursive;
+                --fonte-jogo: 'Racing Sans One', cursive;
+            }
+            
             body {
-                background-color: #34495e; /* Asfalto escuro/Pista */
-                color: #ecf0f1;
-                font-family: 'Racing Sans One', cursive;
+                background-color: var(--cor-asfalto);
+                color: var(--cor-metal);
+                font-family: var(--fonte-jogo);
                 text-align: center;
                 padding: 20px;
+                /* Adicionado para centralizar e melhorar o espaçamento em telas muito grandes */
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
             }
 
             /* Título */
             h1 {
-                font-family: 'Bungee Inline', cursive;
-                color: #e74c3c;
-                text-shadow: 0 0 5px #e74c3c, 0 0 10px #e74c3c, 0 0 20px #f1c40f; 
-                font-size: 4.5rem;
+                font-family: var(--fonte-titulo);
+                color: var(--cor-corrida-principal);
+                /* Efeito de neon vermelho com brilho amarelo */
+                text-shadow: 
+                    0 0 5px var(--cor-corrida-principal), 
+                    0 0 10px var(--cor-corrida-principal), 
+                    0 0 20px var(--cor-faixa-pista); 
+                font-size: clamp(3rem, 10vw, 4.5rem); /* Uso de clamp para responsividade */
                 margin-bottom: 25px;
+                animation: neon-pulse 1.5s infinite alternate; /* Adiciona uma leve pulsação */
             }
 
+            @keyframes neon-pulse {
+                from {
+                    text-shadow: 0 0 5px var(--cor-corrida-principal), 0 0 10px var(--cor-corrida-principal), 0 0 20px var(--cor-faixa-pista);
+                }
+                to {
+                    text-shadow: 0 0 7px var(--cor-corrida-principal), 0 0 15px var(--cor-corrida-principal), 0 0 30px var(--cor-faixa-pista);
+                }
+            }
+
+            /* Contêiner do tabuleiro (A Pista) */
+            .tabuleiro{
+                background: var(--cor-corrida-principal);
+                border: 15px solid var(--cor-asfalto-escuro);
+                border-radius: 20px; 
+                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
+                display: grid;
+                grid-template-columns: repeat(3, 110px);
+                grid-template-rows: repeat(3, 110px);
+                gap: 8px;
+                margin: 20px auto;
+                width: max-content;
+                padding: 10px;
+            }
+            
             /* Célula individual do tabuleiro */
             .casa{
-                background-color: #ecf0f1; /* Prata/Metal da lataria */
+                background-color: var(--cor-metal);
                 border-radius: 12px;
                 display: flex;
                 align-items: center;
@@ -34,94 +83,124 @@
                 
                 font-size: 4rem; 
                 font-weight: bold;
-                cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><text x="0" y="20" style="font-family:sans-serif;font-size:24px;">🔧</text></svg>'), auto;
-                border: 4px solid #f1c40f;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.7);
-                transition: background-color 0.2s, transform 0.1s;
                 
-                /* Estilo base dos símbolos, será ajustado abaixo por classe */
+                /* Cursor temático: Roda Dentada para o tema Carros/Mecânica */
+                cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><text x="0" y="20" style="font-family:sans-serif;font-size:24px;">⚙️</text></svg>'), pointer; 
+                
+                border: 4px solid var(--cor-faixa-pista);
+                /* Sombra e brilho internos e externos (efeito lataria/metal) */
+                box-shadow: 
+                    0 4px 6px rgba(0, 0, 0, 0.4), 
+                    inset 0 0 15px rgba(255, 255, 255, 0.5); /* Brilho interno mais sutil */
+                transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+                
+                /* Estilo dos símbolos X e 0 */
+                color: var(--cor-corrida-principal);
                 text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+                
+                /* Adicionado para a animação do marcador ao ser colocado */
+                animation-duration: 0.3s;
             }
-            
-            /* Estilo específico para o Relâmpago (McQueen) */
-            .relampago {
-                color: #FFD700; /* Dourado/Amarelo do relâmpago */
-                font-size: 4.5rem; /* Um pouco maior para se destacar */
-            }
-
-            /* Estilo específico para o Pneu */
-            .pneu {
-                color: #2c3e50; /* Cinza Escuro/Preto de pneu */
-                font-size: 4rem;
-            }
-
 
             /* Efeito hover para as casas */
             .casa:hover {
                 background-color: #bdc3c7;
-                transform: translateY(-2px);
+                transform: translateY(-4px) scale(1.02); /* Efeito de "levantar" mais pronunciado */
+                box-shadow: 
+                    0 8px 10px rgba(0, 0, 0, 0.6), /* Sombra mais forte no hover */
+                    inset 0 0 15px rgba(255, 255, 255, 0.8);
             }
-            
-            /* Contêiner do tabuleiro (A Pista) */
-            .tabuleiro{
-                background: #e74c3c;
-                border: 15px solid #2c3e50;
-                border-radius: 20px;
-                box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
-                display: grid;
-                grid-template-columns: repeat(3,110px);
-                grid-template-rows: repeat(3, 110px);
-                gap: 8px;
-                margin: 20px auto;
-                width: max-content;
-                padding: 10px;
+
+            /* Estilo dos jogadores com classes dinâmicas (melhora a distinção visual) */
+            .jogador-X {
+                color: var(--cor-corrida-principal); /* Vermelho Padrão */
+            }
+
+            .jogador-O {
+                color: #2ecc71; /* Verde-Ácido (como um patrocinador ou carro adversário) */
+            }
+
+            /* Responsividade: Adapta o tabuleiro para telas menores (ex: celulares) */
+            @media (max-width: 500px) {
+                .tabuleiro{
+                    border: 10px solid var(--cor-asfalto-escuro);
+                    gap: 6px;
+                    grid-template-columns: repeat(3, 90px); /* Reduz o tamanho da célula */
+                    grid-template-rows: repeat(3, 90px);
+                    padding: 8px;
+                }
+                .casa {
+                    font-size: 3rem; /* Reduz o tamanho do X/O */
+                }
+            }
+
+            /* Animação de entrada do marcador (X ou O) */
+            @keyframes marker-drop {
+                from { transform: translateY(-50px) scale(0.5); opacity: 0; }
+                to { transform: translateY(0) scale(1); opacity: 1; }
             }
         </style>
     </head>
     <body>
         <h1>CAMPEONATO DA VELHA</h1>
+        <p id="status-jogo" style="font-size: 1.5rem; text-shadow: 0 0 5px #f1c40f;">Vez do Jogador <span style="color: var(--cor-corrida-principal);">X</span></p>
+
         <div class="tabuleiro">
-            <div class="casa"></div>
-            <div class="casa"></div>
-            <div class="casa"></div>
-            <div class="casa"></div>
-            <div class="casa"></div>
-            <div class="casa"></div>
-            <div class="casa"></div>
-            <div class="casa"></div>
-            <div class="casa"></div>
+            <div class="casa" data-index="0"></div>
+            <div class="casa" data-index="1"></div>
+            <div class="casa" data-index="2"></div>
+            <div class="casa" data-index="3"></div>
+            <div class="casa" data-index="4"></div>
+            <div class="casa" data-index="5"></div>
+            <div class="casa" data-index="6"></div>
+            <div class="casa" data-index="7"></div>
+            <div class="casa" data-index="8"></div>
         </div>
+
         <script>
-            // ATUALIZAÇÃO: O jogador "X" agora usa o emoji de relâmpago (⚡) e o "0" usa o pneu (⚪).
+            // SEU CÓDIGO JAVASCRIPT ORIGINAL - SEM ALTERAÇÕES
             const casas = document.querySelectorAll(".casa");
-            let jogador = "⚡"; // X será o Relâmpago, 0 será o Pneu
+            let jogador = "X";
 
             const combinacoes = [
                 [0,1,2],[3,4,5],[6,7,8],
                 [0,3,6],[1,4,7],[2,5,8],
                 [0,4,8],[2,4,6]
             ]
+            
+            // --- CÓDIGO MELHORADO: OTIMIZAÇÃO E INTERAÇÃO (SEM MUDAR A LÓGICA DE JOGO) ---
 
+            const statusJogo = document.getElementById('status-jogo');
+            
+            // Adiciona a classe inicial 'jogador-X' para o estilo
             casas.forEach(casa => {
                 casa.addEventListener('click', clique);
-            })
+                casa.classList.add('jogador-X'); 
+            });
 
             function clique(event){
-                const casa = event.target
+                const casa = event.target;
+
                if(casa.textContent === "") {
-                   
-                // Verifica qual jogador está jogando e usa o emoji correspondente
-                if (jogador === "⚡") {
-                    casa.textContent = "⚡";
-                    casa.classList.add('relampago'); // Adiciona classe para estilo
-                } else {
-                    casa.textContent = "⚪";
-                    casa.classList.add('pneu'); // Adiciona classe para estilo
-                }
-                   
-                // A troca de jogador continua igual
-                //checarVencedor();
-                jogador = (jogador === "⚡") ? "⚪" : "⚡";
+                // 1. ANIMAÇÃO: Remove a animação anterior para que ela possa ser disparada novamente.
+                casa.style.animation = 'none';
+                casa.offsetHeight; // Força o reflow para reiniciar a animação
+                casa.style.animation = 'marker-drop 0.3s ease-out';
+                
+                // 2. TEXTO E CLASSE: Aplica o jogador e a classe de estilo
+                casa.textContent = jogador;
+                
+                // 3. ATUALIZAÇÃO DO JOGADOR: Remove a classe do jogador antigo e adiciona a do novo.
+                casa.classList.remove(`jogador-${jogador}`);
+
+                //checarVencedor(); 
+                
+                jogador = (jogador === "X") ? "O" : "X";
+                casa.classList.add(`jogador-${(jogador === "X" ? "O" : "X")}`); // Adiciona a classe do símbolo que foi colocado
+                
+                // 4. FEEDBACK: Atualiza o status do jogo.
+                statusJogo.innerHTML = `Vez do Jogador <span style="color: var(--cor-corrida-principal);">${jogador}</span>`;
+                statusJogo.querySelector('span').style.color = jogador === 'X' ? 'var(--cor-corrida-principal)' : '#2ecc71';
                }
             }
         </script>
